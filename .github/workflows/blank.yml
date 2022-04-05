@@ -25,5 +25,11 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          BRANCH="release-1.1.0"
+          BUILDNUMBER=${bamboo.buildNumber}
+          if [[ "$BRANCH" == *\/* ]] || [[ "$BRANCH" == *\\* ]] 
+          then
+             BRANCH=${bamboo.shortPlanName}
+          fi
+          BRANCH="$(tr [A-Z] [a-z] <<< "$BRANCH")"
+          echo $BRANCH
