@@ -29,7 +29,18 @@ jobs:
           BUILDNUMBER=1
           if [[ "$BRANCH" == *\/* ]] || [[ "$BRANCH" == *\\* ]] 
           then
-             BRANCH=${bamboo.shortPlanName}
+             BRANCH="shortplanName"
           fi
           BRANCH="$(tr [A-Z] [a-z] <<< "$BRANCH")"
-          echo $BRANCH
+          SUFFIX="suffix=-$BRANCH-$BUILDNUMBER"
+          DOCKER_SUFFIX="dockerSuffix=-$BRANCH-$BUILDNUMBER"
+          IS_RELEASE="is_release=0"
+          if [[ $BRANCH == "release-"* ]] || [[ $BRANCH == "releases"* ]];
+          then
+            SUFFIX="suffix=-$BUILDNUMBER"
+            DOCKER_SUFFIX = "dockerSuffix=-$BUILDNUMBER" 
+            IS_RELEASE="is_release=1"
+          fi
+          echo $SUFFIX
+          echo $DOCKER_SUFFIX
+          echo $IS_RELEASE
