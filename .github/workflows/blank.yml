@@ -23,6 +23,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - name: show folders
+        run: ls -la
       - name: show version
         run: |
           dotnet build ".\Test\ScanningTool\ScanningTool\ScanningTool\ScanningTool.csproj" -c Release
