@@ -22,23 +22,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: show version
-        run: dotnet --version
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
         run: |
-          BRANCH="release-1.1.0"
-          BUILDNUMBER=1
-          if [[ "$BRANCH" == *\/* ]] || [[ "$BRANCH" == *\\* ]] 
-          then
-             BRANCH="shortplanName"
-          fi
-          BRANCH="$(tr [A-Z] [a-z] <<< "$BRANCH")"
-          SUFFIX="suffix=-$BRANCH-$BUILDNUMBER"
-          IS_RELEASE="is_release=0"
-          if [[ $BRANCH == "release-"* ]] || [[ $BRANCH == "releases"* ]];
-          then
-            SUFFIX="suffix=-$BUILDNUMBER"
-            IS_RELEASE="is_release=1"
-          fi
-          echo $SUFFIX
-          echo $IS_RELEASE
+          dotnet build ".\Test\ScanningTool\ScanningTool\ScanningTool\ScanningTool.csproj" -c Release
+          dotnet publish ".\Test\ScanningTool\ScanningTool\ScanningTool\ScanningTool.csproj" --no-restore -c Release -o ./
+          ls -la
