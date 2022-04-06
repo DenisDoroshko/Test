@@ -27,7 +27,6 @@ jobs:
         run: ls -la
       - name: show version
         run: |
-          mkdir -p ${{ github.workspace }}/temp
           dotnet build "ScanningTool/ScanningTool/ScanningTool.csproj" -c Release
-          dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o /temp
+          dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
           ls -la
