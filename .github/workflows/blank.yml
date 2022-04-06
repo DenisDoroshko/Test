@@ -5,8 +5,8 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
+  #push:
+  #  branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -32,4 +32,13 @@ jobs:
           dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
           cd ${{ github.workspace }}/temp
           tool_output=$(./ScanningTool help)
-          echo "$tool_output. Today is $DAY_OF_WEEK!"
+      - uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 @DenisDoroshko please take a look at this changes($tool_output)'
+            })
