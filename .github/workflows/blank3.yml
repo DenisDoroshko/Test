@@ -25,7 +25,7 @@ jobs:
         run: |
           curl \
             -X POST \
-            ${{ github.event.issue.comments_url }} \
+            .pull_request.comments_url \
             -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             --data '{ "body": "blah blah" }'
