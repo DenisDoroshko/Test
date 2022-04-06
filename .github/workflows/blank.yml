@@ -27,6 +27,6 @@ jobs:
         run: ls -la
       - name: show version
         run: |
-          dotnet build "./ScanningTool/ScanningTool/ScanningTool.csproj" -c Release
-          dotnet publish "./ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ./
+          dotnet build "ScanningTool/ScanningTool/ScanningTool.csproj" -c Release
+          dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o /
           ls -la
