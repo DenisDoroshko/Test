@@ -22,7 +22,7 @@ try
 {
     var reader = new StreamReader("/home/runner/work/_temp/_github_workflow/event.json");
     var resp = reader.ReadToEnd();
-    Console.WriteLine(resp[0]);
+    Console.WriteLine(resp.Replace("\n","").Replace(" ", ""));
 }
 catch
 {
