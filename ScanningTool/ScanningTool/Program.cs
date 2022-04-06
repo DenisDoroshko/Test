@@ -17,7 +17,10 @@
 //return;
 //var client = new HttpClient();
 //await client.GetAsync($"https://api.github.com/repos/{Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")}/pulls/{pr_num}/files");
-Console.WriteLine(Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH"));
+//Console.WriteLine(Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH"));
+var reader = new StreamReader("/home/runner/work/_temp/_github_workflow/event.json");
+var resp = reader.ReadToEnd();
+Console.WriteLine(resp);
 return;
 if (args.Length < 1)
 {
