@@ -17,7 +17,7 @@
 //return;
 //var client = new HttpClient();
 //await client.GetAsync($"https://api.github.com/repos/{Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")}/pulls/{pr_num}/files");
-Console.WriteLine(Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"));
+Console.WriteLine(Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH"));
 return;
 if (args.Length < 1)
 {
