@@ -12,13 +12,14 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
+env:
+  DAY_OF_WEEK: Monday
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     env:
-      tool_output: Hello
+      tool_output: Hello1
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -31,4 +32,4 @@ jobs:
           dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
           cd ${{ github.workspace }}/temp
           ./ScanningTool help
-          echo 'value is $tool_output'
+          echo "$tool_output. Today is $DAY_OF_WEEK!"
