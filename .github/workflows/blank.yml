@@ -40,5 +40,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 @DenisDoroshko please take a look at this changes $tool_output'
+              body: '👋 @DenisDoroshko please take a look at this changes ${{tool_output}} ${tool_output}'
             })
