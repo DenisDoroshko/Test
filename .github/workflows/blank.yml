@@ -25,9 +25,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: show version
         run: |
-          echo ${{ github.workspace }}/temp1
           dotnet build "ScanningTool/ScanningTool/ScanningTool.csproj" -c Release
           dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
           cd ${{ github.workspace }}/temp
-          ls -la
           ./ScanningTool help
