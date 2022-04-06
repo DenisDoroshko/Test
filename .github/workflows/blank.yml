@@ -26,7 +26,7 @@ jobs:
           dotnet build "ScanningTool/ScanningTool/ScanningTool.csproj" -c Release
           dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
           cd ${{ github.workspace }}/temp
-          echo "tool_output=$(./ScanningTool help)" >> $GITHUB_ENV
+          echo "tool_output=$(sudo ./ScanningTool help)" >> $GITHUB_ENV
       - uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
