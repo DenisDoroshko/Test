@@ -31,5 +31,5 @@ jobs:
           dotnet build "ScanningTool/ScanningTool/ScanningTool.csproj" -c Release
           dotnet publish "ScanningTool/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
           cd ${{ github.workspace }}/temp
-          ./ScanningTool help
+          tool_output=$(./ScanningTool help)
           echo "$tool_output. Today is $DAY_OF_WEEK!"
