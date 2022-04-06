@@ -1,20 +1,20 @@
-﻿var path = Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH");
-string jsonString;
-try
-{
-    using (var reader = new StreamReader(path))
-    {
-        jsonString = reader.ReadToEnd();
-    }
+﻿//var path = Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH");
+//string jsonString;
+//try
+//{
+//    using (var reader = new StreamReader(path))
+//    {
+//        jsonString = reader.ReadToEnd();
+//    }
 
-    Console.WriteLine(jsonString);
-}
-catch(Exception e)
-{
-    Console.WriteLine(e.Message);
-}
+//    Console.WriteLine(jsonString);
+//}
+//catch(Exception e)
+//{
+//    Console.WriteLine(e.Message);
+//}
 
-return;
+//return;
 //var client = new HttpClient();
 //await client.GetAsync($"https://api.github.com/repos/{Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")}/pulls/{pr_num}/files");
 Console.WriteLine(Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"));
