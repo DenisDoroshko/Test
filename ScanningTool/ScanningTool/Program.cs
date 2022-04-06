@@ -1,4 +1,6 @@
-﻿if (args.Length < 1)
+﻿Console.WriteLine(Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"));
+return;
+if (args.Length < 1)
 {
     Console.WriteLine("There are no args, exit.");
     return;
