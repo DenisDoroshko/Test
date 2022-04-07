@@ -28,7 +28,7 @@ jobs:
       # Build & Run tool
       - name: build & run tool
         run: |
-          dotnet build "scanning-tool/ScanningTool/src/ScanningTool/ScanningTool.csproj" -c Release
-          dotnet publish "scanning-tool/ScanningTool/src/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
+          dotnet build "scanning-tool/src/ScanningTool/ScanningTool.csproj" -c Release
+          dotnet publish "scanning-tool/src/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
           ./ScanningTool
