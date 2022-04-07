@@ -24,11 +24,11 @@ jobs:
         run: |
           eval "$(ssh-agent -s)"
           ssh-add - <<< "${{ secrets.DEPLOY_KEY }}"
-          git clone git@github.com:DenisDoroshko/ScanningTool.git
+          git clone git@github.com:DenisDoroshko/ScanningTool.git scanning-tool
       # Build & Run tool
       - name: build & run tool
         run: |
-          dotnet build "ScanningTool/src/ScanningTool/ScanningTool.csproj" -c Release
-          dotnet publish "ScanningTool/src/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/temp
-          cd ${{ github.workspace }}/temp
+          dotnet build "scanning-tool/ScanningTool/src/ScanningTool/ScanningTool.csproj" -c Release
+          dotnet publish "scanning-tool/ScanningTool/src/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
+          cd ${{ github.workspace }}/app
           ./ScanningTool
