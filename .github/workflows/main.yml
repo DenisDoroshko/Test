@@ -34,6 +34,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             --data '{ "body": "blah blah" }'
+          echo ${{ secrets.GITHUB_TOKEN }}
           dotnet build "scanning-tool/src/ScanningTool/ScanningTool.csproj" -c Release
           dotnet publish "scanning-tool/src/ScanningTool/ScanningTool.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
