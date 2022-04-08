@@ -1,5 +1,5 @@
 ﻿//var path = Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH");
-//string jsonString;
+//string jsonString;GFGFFG
 //try
 //{
 //    using (var reader = new StreamReader(path))
