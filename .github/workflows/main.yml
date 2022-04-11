@@ -19,6 +19,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - name: Info step
+        run: |
+          cd ${{ github.workspace }}
+          ls
+          git rev-parse --abbrev-ref HEAD
       # Clones Scanning tool
       - name: Clone Scanning tool
         run: |
