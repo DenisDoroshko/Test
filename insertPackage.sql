@@ -9,4 +9,4 @@ IS
       id         NUMBER,
       name       OUT   VARCHAR2
    );
-END acm_advertisement_da;
+END insert_package;
