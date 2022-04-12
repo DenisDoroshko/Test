@@ -29,3 +29,4 @@ IS
          num2 := 10;
       end if;
    END select_info;
+END insert_package;
