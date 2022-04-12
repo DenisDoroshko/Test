@@ -1,5 +1,5 @@
   CREATE OR ALTER PROCEDURE [dbo].[MyProc1]
-	@id int
+	@id int,
 	@room bigint
   AS 
 	DECLARE @int var1;
