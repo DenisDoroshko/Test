@@ -1,0 +1,12 @@
+CREATE OR REPLACE PACKAGE insert_package
+IS
+   PROCEDURE insert_row (
+      name           VARCHAR2,
+      description    VARCHAR2,
+      new_id         OUT   NUMBER
+   );
+   PROCEDURE select_info (
+      id         NUMBER,
+      name       OUT   VARCHAR2
+   );
+END acm_advertisement_da;
