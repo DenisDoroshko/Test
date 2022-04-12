@@ -7,6 +7,7 @@ IS
    );
    PROCEDURE select_info (
       id         NUMBER,
-      name       OUT   VARCHAR2
+      name       OUT   VARCHAR2,
+      name2       OUT   VARCHAR2
    );
 END insert_package;
