@@ -24,6 +24,7 @@ jobs:
       - name: Info step
         run: |
           cd ${{ github.workspace }}
+          realpath ./../
           ls
           git rev-parse --abbrev-ref HEAD
           cp -R . ./../current/
