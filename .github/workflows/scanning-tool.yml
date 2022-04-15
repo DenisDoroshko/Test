@@ -42,7 +42,6 @@ jobs:
       # Build & Run tool
       - name: build & run tool
         run: |
-          exit 1
           dotnet build "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" -c Release
           dotnet publish "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
