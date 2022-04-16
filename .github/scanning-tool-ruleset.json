@@ -1,5 +1,6 @@
 {
   "rules": {
-        "procedure-duplication": "warning"
+        "procedure-duplication": "warning",
+        "parameter-added":"error"
     }
 }
