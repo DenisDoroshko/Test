@@ -26,11 +26,9 @@ jobs:
       - name: Info step
         run: |
           cd ${{ github.workspace }}
-          ls
           git rev-parse --abbrev-ref HEAD
           cp -R . ./../current/
           git switch main
-          ls
           echo "GITHUB_CURRENT_PATH=$(realpath ./../current)" >> $GITHUB_ENV
           echo "GITHUB_ORIGINAL_PATH=$(realpath ./)" >> $GITHUB_ENV
       # Clones Scanning tool
@@ -46,5 +44,3 @@ jobs:
           dotnet publish "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
           ./ScanningTool.Console -o ${{env.GITHUB_ORIGINAL_PATH}} -c ${{env.GITHUB_CURRENT_PATH}} -t ${{ secrets.GITHUB_TOKEN }} -e $GITHUB_EVENT_NAME -d $GITHUB_EVENT_PATH -r ${{ github.workspace }}/../current/.github/scanning-tool-ruleset.json
-          cd ${{ github.workspace }}
-          ls -la
