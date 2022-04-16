@@ -26,7 +26,6 @@ jobs:
       - name: Info step
         run: |
           cd ${{ github.workspace }}
-          git rev-parse --abbrev-ref HEAD
           cp -R . ./../current/
           git switch main
           echo "GITHUB_CURRENT_PATH=$(realpath ./../current)" >> $GITHUB_ENV
