@@ -1,43 +1,36 @@
-# This is a basic workflow to help you get started with Actions
-
 name: scanning-tool
-
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
     branches: [ main ]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env:
-      GITHUB_CURRENT_PATH: Hello
-      GITHUB_ORIGINAL_PATH: Hello
+      # Stores path to the directory of the current branch from which pull request is created
+      GITHUB_CURRENT_PATH: ""
+      # Stores path to the directory of the main branch to which pull request is created
+      GITHUB_ORIGINAL_PATH: ""
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Info step
+      - name: Get original and current state of files
         run: |
           cd ${{ github.workspace }}
           cp -R . ./../current/
           git switch main
           echo "GITHUB_CURRENT_PATH=$(realpath ./../current)" >> $GITHUB_ENV
           echo "GITHUB_ORIGINAL_PATH=$(realpath ./)" >> $GITHUB_ENV
-      # Clones Scanning tool
-      - name: Clone Scanning tool
+      - name: Clone scanning-tool
         run: |
           eval "$(ssh-agent -s)"
           ssh-add - <<< "${{ secrets.DEPLOY_KEY }}"
           git clone git@github.com:DenisDoroshko/scanning-tool.git scanning-tool
-      # Build & Run tool
-      - name: build & run tool
+      - name: Build & Run tool
         run: |
           dotnet build "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" -c Release
           dotnet publish "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
