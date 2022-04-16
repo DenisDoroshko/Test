@@ -45,4 +45,6 @@ jobs:
           dotnet build "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" -c Release
           dotnet publish "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
-          ./ScanningTool.Console -o ${{env.GITHUB_ORIGINAL_PATH}} -c ${{env.GITHUB_CURRENT_PATH}} -t ${{ secrets.GITHUB_TOKEN }} -e $GITHUB_EVENT_NAME -d $GITHUB_EVENT_PATH -r ./.github/scanning-tool-ruleset.json
+          ./ScanningTool.Console -o ${{env.GITHUB_ORIGINAL_PATH}} -c ${{env.GITHUB_CURRENT_PATH}} -t ${{ secrets.GITHUB_TOKEN }} -e $GITHUB_EVENT_NAME -d $GITHUB_EVENT_PATH -r ${{ github.workspace }}/../current/.github/scanning-tool-ruleset.json
+          cd ${{ github.workspace }}
+          ls -la
