@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  build:
+  scan-db-changes:
     runs-on: ubuntu-latest
     env:
       # Stores path to the directory of the current branch from which pull request is created
