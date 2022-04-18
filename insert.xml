@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="123213" author="denis">
+        <insert tableName="INFO" schemaName="TEST">
+            <column name="CONTEXT_ID" value="123" />
+          <column name="NAME" value="Denis" />
+            <column name="STATE_ID" value="12" />
+        </insert>
+        <rollback>
+            <delete tableName="INFO" schemaName="TEST">
+                 <where>Name = 'Denis'</where>
+            </delete>
+        </rollback>
+    <sql>
+      INSERT INTO INFO (INFO_ID, STATE,CONTEXT_ID)
+      VALUES (123, 'NEW', 18);
+    </sql>
+    </changeSet>
+</databaseChangeLog> 
