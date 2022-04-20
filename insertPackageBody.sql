@@ -5,7 +5,8 @@ IS
    ---Insert Row
    PROCEDURE insert_row (
       name           VARCHAR2,
-      description    VARCHAR2,
+      description    VARCHAR,
+      details    VARCHAR,
       new_id         OUT   NUMBER
    )
    IS
@@ -19,7 +20,7 @@ IS
    
    PROCEDURE select_info (
       id         NUMBER,
-      name       OUT   VARCHAR2
+      name       OUT   VARCHAR
    )
    IS
       num  number(12):=null;
