@@ -1,0 +1,65 @@
+﻿@model CartViewModel
+@inject TimeZoneHelper TimeZoneHelper
+@inject IViewLocalizer Localizer
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="container">
+        <div class="container-item">
+            <h1>@Localizer["Your cart"]</h1>
+        </div>
+        <div class="container-item">
+            @if (@Model?.Tickets.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Event name"]</th>
+                            <th>@Localizer["Event start"]</th>
+                            <th>@Localizer["Price"]</th>
+                            <th>@Localizer["Row"]</th>
+                            <th>@Localizer["Number"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var ticket in Model.Tickets)
+                        {
+                            <tr>
+                                <td>@ticket.EventName</td>
+                                <td>@await TimeZoneHelper.ConvertToLocalAsync(ticket.EventStart)</td>
+                                <td>@ticket.Price</td>
+                                <td>@ticket.Row</td>
+                                <td>@ticket.Number</td>
+                                <td>
+                                    <a class="crud-button" asp-controller="Shopping" asp-action="DeleteInCart" asp-route-seatId="@ticket.EventSeatId">@Localizer["Delete"]</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h2>@Localizer["Total price"]:@Model.Tickets.Sum(t => t.Price)$</h2>
+            }
+            else
+            {
+                <h3>@Localizer["Your cart is empty"]</h3>
+            }
+        </div>
+        <div class="container-item cart-buttons">
+            <a href="@Model.ReturnUrl" class="crud-button">@Localizer["Continue shopping"]</a>
+            <a asp-controller="Shopping" asp-action="Pay" class="crud-button">@Localizer["Pay"]</a>
+        </div>
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="cart-error-box" asp-validation-summary="All"></div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div class="modal">
+    <span class="modal-close">
+        <svg viewBox="0 0 40 40">
+            <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+        </svg>
+    </span>
+    <iframe></iframe>
+</div>
+
+<div class="overlay"></div>

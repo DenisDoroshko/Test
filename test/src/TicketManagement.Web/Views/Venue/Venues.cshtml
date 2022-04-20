@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TicketManagement.Web.Models.VenueViewModel>
+@inject IViewLocalizer Localizer
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="container">
+        <div class="container-item">
+            <h1>@Localizer["Venues"]</h1>
+        </div>
+        <div class="container-item">
+            @if (@Model?.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Name"]</th>
+                            <th>@Localizer["Address"]</th>
+                            <td />
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var venue in @Model)
+                        {
+                            <tr>
+                                <td>@venue.Name</td>
+                                <td>@venue.Address</td>
+                                <td>
+                                    <div class="venues-button-container">
+                                        <div><a class="crud-button" asp-controller="Venue" asp-action="Details" asp-route-venueId="@venue.Id">@Localizer["Details"]</a></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>@Localizer["There are no venues"]</h3>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div class="modal">
+    <span class="modal-close">
+        <svg viewBox="0 0 40 40">
+            <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+        </svg>
+    </span>
+    <iframe></iframe>
+</div>
+
+<div class="overlay"></div>
+

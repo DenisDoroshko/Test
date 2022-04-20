@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ThirdPartyEventEditor.Models.ApplicationUser>
+@using Roles = ThirdPartyEventEditor.App_Start.Roles
+<div class="all-container">
+    <div class="container">
+        <div class="container-item">
+            <h1>Users management</h1>
+        </div>
+        <div class="container-item">
+            @if (@Model?.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <td />
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var user in @Model)
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td>
+                                    <div class="role-button-container">
+                                        @if (user.RolesList.Contains(nameof(Roles.Admin)))
+                                        {
+                                            <a class="role-button" href="/Account/DeleteRole?userId=@user.Id&roleName=Admin">Delete Admin</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="role-button not-exist-role" href="/Account/AddRole?userId=@user.Id&roleName=Admin">Add Admin</a>
+                                        }
+                                        @if (user.RolesList.Contains(nameof(Roles.User)))
+                                        {
+                                            <a class="role-button" href="/Account/DeleteRole?userId=@user.Id&roleName=User">Delete User</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="role-button not-exist-role" href="/Account/AddRole?userId=@user.Id&roleName=User">Add User</a>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="crud-button" href="/Account/Delete?userId=@user.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>There are no users</h3>
+            }
+        </div>
+    </div>
+</div>

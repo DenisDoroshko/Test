@@ -1,0 +1,140 @@
+﻿@model LayoutViewModel
+@inject IViewLocalizer Localizer
+<link href="~/css/layouts.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Layout editing"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Edit" asp-controller="Layout" method="post" class="form">
+            <input asp-for="@Model.Id" value="@Model.Id" hidden />
+            <input asp-for="@Model.VenueId" value="@Model.VenueId" hidden />
+            <label>@Localizer["Name"]</label><br />
+            <input asp-for="@Model.Name" class="form-box" /><br />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" maxlength="120" class="form-box"></textarea><br />
+            <label>@Localizer["Width"]</label><br />
+            <input asp-for="@Model.Width" value="@Model.Width" min="0" class="form-box" /><br />
+            <label>@Localizer["Height"]</label><br />
+            <input asp-for="@Model.Height" value="@Model.Height" min="0" class="form-box" /><br />
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+    <div class="header-item">
+        <div class="header-item">
+            <h2>Layout map</h2>
+            <h4 id="error"></h4>
+            <div class="svg-block">
+                @{ var layoutSvgWeight = Model.Width < 65 ? 900 : Model.Width * 15;
+                    var layoutSvgHeight = Model.Height < 40 ? 600 : Model.Height * 15;
+                }
+                <svg class="svgClass" width="@layoutSvgWeight" height="@layoutSvgHeight">
+                    @{ var seats = Model.Areas.Where(a => a.CoordX != 0 && a.CoordY != 0).SelectMany(a => a.Seats);}
+                        @for (var i = 1; i <= Model.Height; i++)
+                        {
+                            for (var j = 1; j <= Model.Width; j++)
+                            {
+                                var x = j * 10;
+                                var y = i * 10;
+                                var seat = seats.FirstOrDefault(s => Model.Areas.First(a => a.Id == s.AreaId).CoordX -1 + s.Number == j 
+                                && Model.Areas.First(a => a.Id == s.AreaId).CoordY + s.Row -1 == i);
+                                if (seat != null)
+                                {
+                                <circle fill="@Model.Areas.Where(a => a.Id == seat.AreaId).FirstOrDefault()?.Color" cx="@x" cy="@y" r="4" />
+                                }
+                                else
+                                {
+                                <circle onclick="placeArea(@i,@j)" class="empty-circle" cx="@x" cy="@y" r="4" />
+                                }
+                            }
+                        }
+                </svg>
+            </div>
+        </div>
+        <a class="crud-button" asp-controller="Area" asp-action="Create" asp-route-layoutId="@Model.Id">@Localizer["Add area"]</a>
+        <h2>@Localizer["Layout areas"]</h2>
+        <div class="header-item">
+            @foreach (var area in Model.Areas)
+            {
+                <div class="area-block">
+                    @{ var areaSvgWeight = area.Width < 65 ? 900 : area.Width * 10;
+                        var areaSvgHeight = area.Height < 40 ? 600 : area.Height * 10;
+                    }
+                    <svg class="svgClass" width="@areaSvgWeight" height="@areaSvgHeight">
+                        @for (var i = 1; i <= area.Height; i++)
+                        {
+                            for (var j = 1; j <= area.Width; j++)
+                            {
+                                var x = j * 10;
+                                var y = i * 10;
+                                if (area.Seats.Any(s => s.Number == j && s.Row == i))
+                                {
+                                    <circle fill="@area.Color" cx="@x" cy="@y" r="2" />
+                                }
+                                else
+                                {
+                                    <circle class="empty-circle" cx="@x" cy="@y" r="2" />
+                                }
+                            }
+                        }
+
+                    </svg>
+                </div>
+                @if (area.CoordX != 0 && area.CoordY != 0)
+                {
+                    <input onclick='selectArea(this,@area.Id)' class="place-button relocate-button crud-button" type="button" value=@Localizer["Relocate"] />
+                }
+                else
+                {
+                    <input onclick='selectArea(this,@area.Id)' class="place-button crud-button" type="button" value=@Localizer["Place"] />
+                }
+                <a class="crud-button" asp-controller="Area" asp-action="Edit" asp-route-areaId="@area.Id">@Localizer["Edit"]</a>
+                <a class="crud-button" asp-controller="Area" asp-action="Delete" asp-route-areaId="@area.Id">@Localizer["Delete"]</a>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    var areaId = 0;
+    function selectArea(e, paramAreaId) {
+        areaId = paramAreaId;
+        let placeButtons = document.getElementsByClassName("place-button");
+        for (let i = 0; i < placeButtons.length; i++) {
+            if (placeButtons[i].value == "@Localizer["Selected"]") {
+                if (placeButtons[i].classList.contains("relocate-button"))
+                    placeButtons[i].setAttribute("value", "@Localizer["Relocate"]");
+                else
+                    placeButtons[i].setAttribute("value", "@Localizer["Place"]");
+            }
+        }
+        $(e).attr('value', "@Localizer["Selected"]");
+    }
+    function placeArea(row, number) {
+        let placeButtons = document.getElementsByClassName("place-button");
+        let isSelected = false;
+        for (let i = 0; i < placeButtons.length; i++) {
+            if (placeButtons[i].getAttribute('value') == "@Localizer["Selected"]") {
+                isSelected = true;
+            }
+        }
+        if (isSelected) {
+            var data = { layoutId: @Model.Id, areaId: areaId, coordX: number, coordY: row };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Place", "Area")',
+                data: data,
+                statusCode: {
+                    200: function () {
+                        location.reload();
+                    },
+                    400: function (response) {
+                        document.getElementById('error').innerHTML = response.responseText;
+                    }
+                }
+            });
+        }
+    }
+</script>

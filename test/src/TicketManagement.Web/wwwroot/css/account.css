@@ -1,0 +1,170 @@
+﻿.all-container {
+    margin-bottom: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+.account-info-container {
+    display: grid;
+    grid-template-columns: 30% 50%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 0 auto;
+}
+
+.container-item {
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+}
+
+.container {
+    margin: 0 auto;
+    width: max-content;
+    text-align: center;
+    display: grid;
+}
+
+.header-item {
+    width: 100%;
+    float: left;
+    text-align: center;
+}
+
+
+.crud-button {
+    height: 3em;
+    border-radius: 4px;
+    color: #fff;
+    width: 7em;
+    text-align: center;
+    font-size: 14px;
+    margin: 0 auto;
+    text-decoration: none;
+    border: 1px solid rgb( 33, 126, 74 );
+    background-color: rgb( 43, 153, 91 );
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.crud-button:hover {
+    background-color: rgb( 75, 183, 141 );
+    color: #ebefee;
+}    
+
+
+.table {
+    margin-top: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+}
+
+    .table th {
+        font-weight: bold;
+        padding: 5px;
+        background: #efefef;
+        border: 1px solid #dddddd;
+    }
+
+    .table td {
+        border: 1px solid #dddddd;
+        padding: 5px;
+    }
+
+.image-container {
+    margin: 0 auto;
+    width: 245px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.image-button {
+    margin-top: 5px;
+}
+
+.manage-button-container {
+    display: grid;
+    grid-template-columns: 7em 7em 7em;
+}
+
+.venues-button-container {
+    display: grid;
+}
+
+.form {
+    width: 40%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.form-box {
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.submit-button {
+    margin: 0 auto;
+    background-color: #dc3545;
+}
+
+    .submit-button:hover {
+        background-color: #fc5060;
+    }
+
+.submit-box {
+    width: 100%;
+    text-align: center;
+}
+
+.main-info {
+    text-align: left;
+}
+
+.event-info {
+    display: inline-block;
+}
+
+.icon {
+    margin-bottom: 7px;
+}
+
+.error-box {
+    width: 40%;
+    margin: 0 auto;
+    color: #f53434;
+    text-align: left;
+}
+
+.success-message {
+    color: #15d338;
+    text-align: center;
+}
+
+#account-navbar {
+    padding: 0;
+    text-align: left;
+    list-style-type: none;
+    width: 80%;
+}
+#account-navbar li {
+    border-bottom: 1px solid #666;
+}
+
+#account-navbar a {
+    color: #2d72bf;
+    padding: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}  
+#account-navbar a:hover {
+    color: #008dd0;
+} 

@@ -1,0 +1,20 @@
+﻿@model LayoutViewModel
+@inject IViewLocalizer Localizer
+<link href="~/css/layouts.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Layout creating"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Create" asp-controller="Layout" method="post" class="form">
+            <input asp-for="@Model.VenueId" value="@Model.VenueId" class="form-box" hidden />
+            <label>@Localizer["Name"]</label><br />
+            <input asp-for="@Model.Name" class="form-box" /><br />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" maxlength="120" class="form-box"></textarea><br />
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+</div>

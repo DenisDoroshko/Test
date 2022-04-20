@@ -1,0 +1,29 @@
+﻿@{ Layout = null;}
+@{
+    var errorMessage = string.IsNullOrEmpty(ViewData["Error message"]?.ToString()) == false ?
+        ViewData["Error message"] : "Something went wrong.Try again later";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body, html {
+            background: url(../../Content/Images/ErrorImage.jpg) no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+        }
+
+        .header {
+            margin-top: 15em;
+            color: #196ba2;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="header">@(errorMessage)</h1>
+</body>
+</html>
+

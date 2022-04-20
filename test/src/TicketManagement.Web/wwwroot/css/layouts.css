@@ -1,0 +1,66 @@
+﻿.layout-container {
+    display: grid;
+    grid-template-columns: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 0 auto;
+}
+.main-info {
+    text-align: left;
+}
+
+.svgClass {
+    background-color: #e9e8f3;
+}
+.circle {
+}
+
+.circle:hover {
+        fill: rgb(0, 238, 255);
+}
+.svgClass {
+    background-color: #e9e8f3;
+}
+
+.empty-circle {
+    fill: #cdd5d4;
+}
+
+    .empty-circle:hover {
+        fill: #9fa5a4
+    }
+
+.area-block {
+    margin: 0 auto;
+    width: 300px;
+    height: 200px;
+    overflow: scroll;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.layout-block {
+    margin: 0 auto;
+    width: 500px;
+    height: 300px;
+    overflow: scroll;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.layout-details-block {
+    margin: 0 auto;
+    width: 300px;
+    height: 250px;
+    overflow: scroll;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.svg-block {
+    margin: 0 auto;
+    width: 900px;
+    height: 600px;
+    overflow: scroll;
+}
+
+#error {
+    color: #f53434;
+}

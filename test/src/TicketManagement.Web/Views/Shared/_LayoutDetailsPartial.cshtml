@@ -1,0 +1,32 @@
+﻿@model LayoutViewModel
+<link href="~/css/layouts.css" rel="stylesheet">
+<div class="all-container">
+    <div class="layout-container">
+        <div class="container-item">
+            <div class="main-info">
+                <h4 class="text-center">@Model.Name</h4>
+                <h5 class="text-center">@Model.Description</h5>
+            </div>
+        </div>
+    </div>
+    <div class="header-item">
+        <div class="layout-details-block">
+            @{ var layoutSvgWeight = Model.Width < 65 ? 300 : Model.Width * 13;
+                var layoutSvgHeight = Model.Height < 20 ? 250 : Model.Height * 13;
+            }
+            <svg class="svgClass" width="@layoutSvgWeight" height="@layoutSvgHeight">
+                @foreach (var area in Model.Areas)
+                {
+                <g fill="@area.Color">
+                    @foreach (var seat in area.Seats)
+                    {
+                    var x = (seat.Number + area.CoordX - 1) * 10;
+                    var y = (seat.Row + area.CoordY - 1) * 10;
+                    <circle class="circle" cx="@x" cy="@y" r="4" />
+                    }
+                </g>
+                }
+            </svg>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@model PaymentViewModel
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="~/icon.png">
+    <title>Checkout Form</title>
+    <link href="~/css/bankCard.css" rel="stylesheet">
+</head>
+<body>
+    <p class="success-message">@ViewData["SuccessMessage"]</p>
+    <div class="error-box" asp-validation-summary="All"></div>
+    <form asp-action="TopUp" asp-controller="Account" method="post" class="checkout">
+        <div class="checkout-header">
+            <h1 class="checkout-title">
+                @Localizer["Payment amount"]:
+                @if (CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator == ".")
+                {
+                    <input type="text" value="" placeholder="@Localizer["Amount"]" class="checkout-input point-input" maxlength="12" asp-for="@Model.Amount" />
+                }
+                else
+                {
+                    <input type="text" value="" placeholder="@Localizer["Amount"]" class="checkout-input comma-input" maxlength="12" asp-for="@Model.Amount" />
+                }$
+
+            </h1>
+        </div>
+        <p>
+            <input asp-for="@Model.Name" type="text" class="checkout-input checkout-name name-input" placeholder="Your name" autofocus>
+            <input asp-for="@Model.Month" id="month" type="text" value="" class="checkout-input checkout-exp number-input" maxlength="2" placeholder="MM">
+            <input asp-for="@Model.Year" id="year" type="text" value="" class="checkout-input checkout-exp number-input" maxlength="2" placeholder="YY">
+        </p>
+        <p>
+            <input asp-for="@Model.CardNumber" type="text" class="checkout-input checkout-card number-input" maxlength="16" placeholder="@Localizer["card number"]">
+            <input asp-for="@Model.CVC" type="text" value="" class="checkout-input checkout-cvc number-input" maxlength="3" placeholder="CVC">
+        </p>
+        <p>
+            <input type="submit" value="@Localizer["Pay"]" class="checkout-btn">
+        </p>
+    </form>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(".number-input").keypress(function (e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+        });
+        $(".point-input").keypress(function (e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            var inputValue = ($(this).val() + String.fromCharCode(charCode));
+            var re = new RegExp("^([0-9]+\.?[0-9]?[0-9]?)$");
+            return re.test(inputValue);
+        });
+        $(".comma-input").keypress(function (e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            var inputValue = ($(this).val() + String.fromCharCode(charCode));
+            var re = new RegExp("^([0-9]+\,?[0-9]?[0-9]?)$");
+            return re.test(inputValue);
+        });
+        $(".name-input").keypress(function (e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if (charCode != 32 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122)) {
+                return false;
+            }
+        });
+        $(".checkout-input").bind("paste", function (e) {
+            return false;
+        });
+    </script>
+</body>
+</html>

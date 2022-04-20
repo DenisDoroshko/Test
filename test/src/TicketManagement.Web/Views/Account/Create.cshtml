@@ -1,0 +1,30 @@
+﻿@model RegistrationViewModel
+@inject IViewLocalizer Localizer
+@using TicketManagement.Web.Infrastructure.Identity;
+@{
+    var rolesList = new List<string> { Roles.VenueManager, Roles.EventManager, Roles.User };
+    var roles = rolesList.Select(role => new SelectListItem { Value = role, Text = role })
+    .ToList();
+}
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["User creating"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Create" asp-controller="Account" method="post" class="form">
+            <input asp-for="Username" class="form-box" placeholder="@Localizer["UsernameHolder"]" />
+            <input asp-for="Name" class="form-box" placeholder="@Localizer["NameHolder"]" />
+            <input asp-for="Surname" class="form-box" placeholder="@Localizer["SurnameHolder"]" />
+            <input asp-for="Password" class="form-box" type="password" placeholder="@Localizer["PasswordHolder"]" />
+            <input asp-for="RepeatPassword" class="form-box" type="password" placeholder="@Localizer["RepeatPasswordHolder"]" />
+            <input asp-for="Email" class="form-box" placeholder="@Localizer["EmailHolder"]" />
+            <select asp-for="Role" class="form-box"
+                    asp-items="@roles">
+            </select>
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+</div>

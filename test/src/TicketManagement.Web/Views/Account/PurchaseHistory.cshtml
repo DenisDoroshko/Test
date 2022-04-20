@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TicketViewModel>
+@{
+    Layout = "_AccountCenter";
+}
+@inject IViewLocalizer Localizer
+@inject TimeZoneHelper TimeZoneHelper
+<h1>@Localizer["Your tickets"]</h1>
+@if (@Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localizer["Event name"]</th>
+                <th>@Localizer["Event start"]</th>
+                <th>@Localizer["Price"]</th>
+                <th>@Localizer["Row"]</th>
+                <th>@Localizer["Number"]</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    <td>@ticket.EventName</td>
+                    <td>@await TimeZoneHelper.ConvertToLocalAsync(ticket.EventStart)</td>
+                    <td>@ticket.Price</td>
+                    <td>@ticket.Row</td>
+                    <td>@ticket.Number</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>@Localizer["You don't have any tickets yet"]</h3>
+}

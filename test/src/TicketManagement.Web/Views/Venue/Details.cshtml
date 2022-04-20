@@ -1,0 +1,19 @@
+﻿@model TicketManagement.Web.Models.VenueViewModel
+@inject IViewLocalizer Localizer
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="venue-container">
+        <div class="container-item">
+            <div class="main-info">
+                <h2 class="text-center">@Model.Name</h2>
+                <img class="icon" width="18" height="18" src="~/lib/bootstrap/dist/fonts/map-locator.png" alt="">
+                <h4 class="event-info">@Model.Address</h4><br />
+                <img class="icon" width="18" height="18" src="~/lib/bootstrap/dist/fonts/phone-call.png" alt="">
+                <h4 class="event-info">@Model.Phone</h4><br />
+            </div>
+        </div>
+    </div>
+    <div class="header-item">
+        <h3>@Model.Description</h3>
+    </div>
+</div>

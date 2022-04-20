@@ -1,0 +1,7 @@
+﻿@model decimal
+@inject IViewLocalizer Localizer
+@{
+    Layout = "_AccountCenter";
+}
+<h2>@Localizer["Actual account balance"]:@Math.Round(Model,2) $</h2>
+<a class="crud-button" asp-controller="Account" asp-action="TopUp">@Localizer["Make payment"]</a>

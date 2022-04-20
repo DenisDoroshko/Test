@@ -1,0 +1,61 @@
+﻿@model TicketManagement.Web.Models.VenueViewModel
+@inject IViewLocalizer Localizer
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Venue editing"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Edit" asp-controller="Venue" method="post" class="form">
+            <input asp-for="@Model.Id" value="@Model.Id" class="form-box" hidden />
+            <label>@Localizer["Name"]</label><br />
+            <input asp-for="@Model.Name" value="@Model.Name" class="form-box" maxlength="120" /><br />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" maxlength="120" class="form-box">@Model.Description</textarea><br />
+            <label>@Localizer["Phone"]</label><br />
+            <input asp-for="@Model.Phone" value="@Model.Phone" placeholder="+xxx(xxx)xxxxxxx" class="form-box" maxlength="30" /><br />
+            <label>@Localizer["Address"]</label><br />
+            <input asp-for="@Model.Address" value="@Model.Address" class="form-box" maxlength="200" /><br />
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+    <div class="header-item">
+        <a class="crud-button" asp-controller="Layout" asp-action="Create" asp-route-venueId="@Model.Id">@Localizer["Add layout"]</a>
+        @if (Model.Layouts != null && Model.Layouts.Any())
+        {
+        <h2>@Localizer["Venue layouts"]</h2>
+        @foreach (var layout in Model.Layouts)
+        {
+            <div class="layout-block">
+                @{ var layoutSvgWeight = layout.Width < 65 ? 900 : layout.Width * 13;
+                    var layoutSvgHeight = layout.Height < 40 ? 600 : layout.Height * 13;
+                }
+                <svg class="svgClass" width="@layoutSvgWeight" height="@layoutSvgHeight">
+                    @foreach (var area in layout.Areas)
+                    {
+                        if (area.CoordX != 0 && area.CoordY != 0)
+                        {
+                        <g fill="@area.Color">
+                            @foreach (var seat in area.Seats)
+                            {
+                                var x = (seat.Number + area.CoordX - 1) * 10;
+                                var y = (seat.Row + area.CoordY - 1) * 10;
+                                <circle class="circle" cx="@x" cy="@y" r="4" />
+                            }
+                        </g>
+                        }
+                    }
+                </svg>
+            </div>
+            <a class="crud-button" asp-controller="Layout" asp-action="Edit" asp-route-layoutId="@layout.Id">@Localizer["Edit"]</a>
+            <a class="crud-button load-modal-frame" asp-controller="Layout" asp-action="Delete" asp-route-layoutId="@layout.Id">@Localizer["Delete"]</a>
+                    }
+         }
+         else
+         {
+            <h2>@Localizer["Venue doesn't have layouts yet"]</h2>
+         }
+    </div>
+</div>

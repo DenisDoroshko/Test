@@ -1,0 +1,9 @@
+﻿@model IEnumerable<EventViewModel>
+@inject IViewLocalizer Localizer
+<link href="~/css/events.css" rel="stylesheet">
+<div class="all-container">
+    <div class="container-item">
+        <h1>@Localizer["Upcoming events"]</h1>
+    </div>
+    @await Html.PartialAsync("_EventsPartial", Model)
+</div>

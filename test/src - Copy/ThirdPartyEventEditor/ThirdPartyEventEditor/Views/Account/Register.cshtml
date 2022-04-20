@@ -1,0 +1,22 @@
+﻿@model ThirdPartyEventEditor.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<div class="all-container">
+    <div class="header-item">
+        <h1>Register to Third party editor</h1>
+    </div>
+    <div class="header-item">
+        <form action="/Account/Register" method="post" class="form">
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            <label>Email</label><br />
+            <input name="Email" class="form-box" maxlength="120" /><br />
+            <label>Password</label><br />
+            <input name="Password" type="password" class="form-box" maxlength="120" /><br />
+            <label>Confirm password</label><br />
+            <input name="ConfirmPassword" type="password" class="form-box" maxlength="120" /><br />
+            <div class="create-button-box"><button type="submit" class="crud-button edit-button">Submit</button></div>
+        </form>
+    </div>
+</div>

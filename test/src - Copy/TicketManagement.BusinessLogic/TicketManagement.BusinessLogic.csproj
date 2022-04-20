@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TicketManagement.DataAccess\TicketManagement.DataAccess.csproj" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>TicketManagement.UnitTests</_Parameter1>
+    </AssemblyAttribute>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>TicketManagement.Web</_Parameter1>
+    </AssemblyAttribute>
+	  <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+		  <_Parameter1>TicketManagement.WebIntegrationTests</_Parameter1>
+	  </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="FluentValidation" Version="10.3.0" />
+  </ItemGroup>
+
+</Project>
