@@ -7,24 +7,12 @@ on:
 jobs:
   scan-db-changes:
     runs-on: ubuntu-latest
-    env:
-      # Stores path to the directory of the current branch from which pull request is created
-      GITHUB_CURRENT_PATH: ""
-      # Stores path to the directory of the main branch to which pull request is created
-      GITHUB_ORIGINAL_PATH: ""
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Get original and current state of files
-        run: |
-          cd ${{ github.workspace }}
-          cp -R . ./../current/
-          git switch main
-          echo "GITHUB_CURRENT_PATH=$(realpath ./../current)" >> $GITHUB_ENV
-          echo "GITHUB_ORIGINAL_PATH=$(realpath ./)" >> $GITHUB_ENV
       - name: Clone scanning-tool
         run: |
           eval "$(ssh-agent -s)"
@@ -35,4 +23,5 @@ jobs:
           dotnet build "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" -c Release
           dotnet publish "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
-          ./ScanningTool.Console -o ${{env.GITHUB_ORIGINAL_PATH}} -c ${{env.GITHUB_CURRENT_PATH}} -t ${{ secrets.GITHUB_TOKEN }} -e $GITHUB_EVENT_NAME -d $GITHUB_EVENT_PATH
+          echo -o $GITHUB_REPOSITORY_OWNER -r $GITHUB_REPOSITORY_NAME -c $(git rev-parse --abbrev-ref HEAD) -d main -t ${{ secrets.GITHUB_TOKEN }}
+          ./ScanningTool.Console -o $GITHUB_REPOSITORY_OWNER -r $GITHUB_REPOSITORY_NAME -c $(git rev-parse --abbrev-ref HEAD) -d main -t ${{ secrets.GITHUB_TOKEN }}
