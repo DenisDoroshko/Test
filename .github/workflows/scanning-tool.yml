@@ -15,7 +15,6 @@ jobs:
           fetch-depth: 0
       - name: Clone scanning-tool
         run: |
-          git rev-parse --abbrev-ref HEAD
           eval "$(ssh-agent -s)"
           ssh-add - <<< "${{ secrets.DEPLOY_KEY }}"
           git clone git@github.com:DenisDoroshko/scanning-tool.git scanning-tool
@@ -24,5 +23,4 @@ jobs:
           dotnet build "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" -c Release
           dotnet publish "scanning-tool/src/ScanningTool.Console/ScanningTool.Console.csproj" --no-restore -c Release -o ${{ github.workspace }}/app
           cd ${{ github.workspace }}/app
-          echo -o $GITHUB_REPOSITORY_OWNER -r $GITHUB_REPOSITORY_NAME -c $(git rev-parse --abbrev-ref HEAD) -d main -t ${{ secrets.GITHUB_TOKEN }}
-          ./ScanningTool.Console -o DenisDoroshko -r Test -c $(git rev-parse --abbrev-ref HEAD) -d main -t ${{ secrets.GITHUB_TOKEN }}
+          ./ScanningTool.Console -o DenisDoroshko -r Test -c $GITHUB_HEAD_REF -d main -t ${{ secrets.GITHUB_TOKEN }}
