@@ -2,7 +2,7 @@
    "change-set-rollback":"Warning",
    "change-set-precondition":"Warning",
    "column-name-length":"Warning",
-   "insert-static-id":"Warning",
+   "insert-static-id":"Error",
    "primary-key":"Warning",
    "table-name-length":"Warning"
 }
