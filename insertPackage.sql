@@ -10,3 +10,5 @@ IS
       name       OUT   VARCHAR2
    );
 END insert_package;
+
+INSERT INTO TABLE (A,B,C_ID) VALUES(1,2,3)

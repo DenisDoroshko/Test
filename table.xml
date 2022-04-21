@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet author="Test" id="add table" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="TEST"/>
+			</not>
+		</preConditions>
+		<createTable tableName="TEST_1">
+			<column name="ID" type="NUMBER">
+				<constraints nullable="false" />
+			</column>
+			<column name="CUSTOMERID" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+    
+    <createTable tableName="TEST_2">
+			<column name="ID" type="NUMBER">
+				<constraints primaryKey="true" primaryKeyName="PK_ID" nullable="false" />
+			</column>
+			<column name="CUSTOMERID" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+    
+    <createTable tableName="TEST_3_1231231231231231231231231231231231233113">
+			<column name="ID" type="NUMBER">
+				<constraints primaryKey="true" primaryKeyName="PK_ID" nullable="false" />
+			</column>
+			<column name="CUSTOMERID" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
