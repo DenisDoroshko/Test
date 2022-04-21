@@ -1,5 +1,5 @@
 {
-   Rules
+   "Rules"
    {
       "change-set-rollback":"Warning",
       "change-set-precondition":"Warning",
