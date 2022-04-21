@@ -27,7 +27,7 @@
 			</column>
 		</createTable>
     
-    <createTable tableName="TEST_3">
+    <createTable tableName="TEST_3_1231231231231231231231231231231231233113">
 			<column name="ID" type="NUMBER">
 				<constraints primaryKey="true" primaryKeyName="PK_ID" nullable="false" />
 			</column>
