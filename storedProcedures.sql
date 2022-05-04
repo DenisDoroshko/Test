@@ -18,6 +18,7 @@
          account_number           in out number,
          alternatelastname        in     varchar2 default null,
 	 alternatecountry         in     varchar2 default null,
+	 alternatestateid         in     number,
          alternatefirstname       in     varchar2 default null)
      is
          acc_number   varchar2 (100);
