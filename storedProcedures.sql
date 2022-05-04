@@ -1,7 +1,10 @@
  CREATE OR ALTER PROCEDURE [dbo].[MyProc2]
-  @age bigint,
+        @age bigint,
 	@id bigint OUTPUT = NULL,
-  @name nvarchar(100) = 'some value'
+        @name nvarchar(100) = 'some value',
+	@event_id bigint,
+	@country_id OUTPUT bigint,
+	@route OUTPUT nvarchar(100) = N'axs.com\',
   AS 
 	DECLARE @int var1;
 	IF ( @c = 0 ) 
@@ -13,7 +16,7 @@
   procedure insert_row (
          last_name                in     varchar2,
          first_name               in     varchar2,
-         country                   in    varchar2 default null,
+         country                  in    varchar2 default null,
          stateid                  in     varchar2 default null,
          account_number           in out number,
          alternatelastname        in     varchar2 default null,
