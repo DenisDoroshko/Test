@@ -22,7 +22,8 @@
          alternatelastname        in     varchar2 default null,
 	 alternatecountry         in     varchar2 default null,
 	 alternatestateid         in     number,
-         alternatefirstname       in     varchar2 default null)
+         alternatefirstname       in     varchar2 default null,
+	 event_id                 in     number)
      is
          acc_number   varchar2 (100);
          cust_pwd     varchar2 (15);
