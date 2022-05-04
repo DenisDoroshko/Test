@@ -1,5 +1,4 @@
 CREATE PROC What_DB_is_that 
-   @ID INT,
    @NEWID INT = 123 OUT READONLY,
    @NAME VARCHAR(123) = 'ASDASD' OUT,
    @AGE INT,
