@@ -1,0 +1,68 @@
+﻿@model ThirdPartyEventEditor.Models.ThirdPartyEvent
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var startDate = Model.StartDate;
+    if (startDate.Year == 1)
+    {
+        startDate = DateTime.UtcNow;
+    }
+    startDate = startDate.ToLocalTime();
+    var finishDate = Model.StartDate;
+    if (finishDate.Year == 1)
+    {
+        finishDate = DateTime.UtcNow;
+    }
+    finishDate = finishDate.ToLocalTime();
+}
+
+<div class="all-container">
+    <div class="header-item">
+        <h1>Event creating</h1>
+    </div>
+    <div class="header-item">
+        <p class="create-success-message">@ViewData["SuccessMessage"]</p>
+        @Html.ValidationSummary(true)
+        <form action="/Event/Create" method="post" id="create-form" class="form" enctype="multipart/form-data">
+            <label>Name</label><br />
+            <input name="Name" value="@Model.Name" class="form-box" maxlength="120" /><br />
+            <label>Venue name</label><br />
+            <input name="VenueName" value="@Model.VenueName" class="form-box" maxlength="120" /><br />
+            <label>Layout name</label><br />
+            <input name="LayoutName" value="@Model.LayoutName" class="form-box" maxlength="120" /><br />
+            <label>Description</label><br />
+            <textarea name="Description" class="form-box">@Model.Description</textarea><br />
+            <label>Start date and time</label><br />
+            <input name="StartDate" type="text" id="startPicker" class="form-box"><br />
+            <label>Finish date and time</label><br />
+            <input name="EndDate" type="text" id="finishPicker" class="form-box"><br />
+            <div class="create-button-box">
+                <label class="btn btn-default btn-file crud-button choose-button">
+                    Choose image <input type="file" style="display: none;" required name="image" class="file-input" accept="image/png, image/jpeg" id="file">
+                </label>
+            </div>
+            <div class="create-button-box"><button id="submit-form-button" type="submit" class="crud-button edit-button">Submit</button></div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/moment-with-locales.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#submit-form-button").click(function () {
+            $("#create-form").submit();
+
+        });
+        $('#startPicker').datetimepicker({
+            locale: "en"
+        });
+        $('#finishPicker').datetimepicker({
+            locale: "en"
+        });
+    });
+</script>
+

@@ -1,0 +1,27 @@
+﻿@model ThirdPartyEventEditor.Models.ThirdPartyEvent
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="all-container">
+    <div class="details-event-container">
+        <div class="container-item">
+            <div class="image-container">
+                <img src="@(Model.PosterImage ?? @"../../Content/Images/default.jpg")" width="245" height="356">
+            </div>
+        </div>
+        <div class="container-item">
+            <div class="main-info">
+                <h2 class="text-center">@Model.Name</h2>
+                <img class="icon" width="18" height="18" src="~/Content/Images/calendar.png" alt="">
+                <h4 class="event-info">@Model.StartDate.ToLocalTime()-@Model.EndDate.ToLocalTime()</h4><br />
+                <img class="icon" width="18" height="18" src="~/Content/Images/map-locator.png" alt="">
+                <h4 class="event-info">@Model.VenueName   @Model.LayoutName</h4>
+            </div>
+        </div>
+    </div>
+    <div class="header-item">
+        <h3>@Model.Description</h3>
+    </div>
+</div>

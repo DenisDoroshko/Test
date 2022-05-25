@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "_Layout";
+}
+@inject IViewLocalizer Localizer
+@using TicketManagement.Web.Infrastructure.Identity;
+<link href="~/css/account.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Account management"]</h1>
+    </div>
+    <div class="account-info-container">
+        <div class="container-item">
+            <ul id="account-navbar">
+                @if (User.IsInRole(Roles.User))
+                {
+                    <li><a asp-controller="Account" asp-action="Balance">@Localizer["Balance"]</a></li>
+                    <li><a asp-controller="Account" asp-action="PurchaseHistory">@Localizer["My tickets"]</a></li>
+                }
+                <li><a asp-controller="Account" asp-action="EditContactInfo">@Localizer["Edit contact information"]</a></li>
+                <li><a asp-controller="Account" asp-action="ChangePassword">@Localizer["Change password"]</a></li>
+                <li><a asp-controller="Account" asp-action="Logout">@Localizer["Exit"]</a></li>
+            </ul>
+        </div>
+        <div class="container-item">
+            @RenderBody()
+        </div>
+    </div>
+</div>

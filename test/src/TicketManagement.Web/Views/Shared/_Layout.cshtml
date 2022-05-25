@@ -1,0 +1,84 @@
+﻿@inject IViewLocalizer Localizer
+@using TicketManagement.Web.Infrastructure.Identity;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events.by</title>
+    <link rel="icon" href="~/icon.png">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <div class="main-container">
+                <div class="grid-item">
+                    @await Html.PartialAsync("_SelectLanguagePartial")
+                </div>
+                <div class="grid-item">
+                    <div class="logo-box">
+                        <a asp-controller="Home" asp-action="Index"><img src="~/logo.png" alt="" height="30" width="110" /></a>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <ul class="mainbar">
+                        <li class="nav-li"><a asp-controller="Home" asp-action="Index">@Localizer["Home"]</a></li>
+                        <li class="nav-li"><a asp-controller="Venue" asp-action="Venues">@Localizer["Venues"]</a></li>
+                        <li class="nav-li"><a asp-controller="Event" asp-action="Events">@Localizer["Events"]</a></li>
+                    </ul>
+                </div>
+                <div class="grid-item nav-sub">
+                    @if (User.IsInRole(Roles.VenueManager) || User.IsInRole(Roles.EventManager))
+                    {
+                        <ul class="topmenu ul-sub">
+                            <li class="li-sub nav-li">
+                                <a href="">@Localizer["Tools"]></a>
+                                <ul class="submenu ul-sub">
+                                    @if (User.IsInRole(Roles.VenueManager))
+                                    {
+                                        <li class="li-sub"><a class="a-sub" asp-controller="Venue" asp-action="ManageVenues">@Localizer["Manage venues"]</a></li>
+                                        <li class="li-sub"><a class="a-sub" asp-controller="Account" asp-action="ManageUsers">@Localizer["Manage users"]</a></li>
+                                    }
+                                    @if (User.IsInRole(Roles.EventManager))
+                                    {
+                                        <li class="li-sub"><a class="a-sub" asp-controller="Event" asp-action="ManageEvents">@Localizer["Manage events"]</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                </div>
+                <div class="grid-item">
+                    <ul class="mainbar">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-li"><a asp-controller="Account" asp-action="EditContactInfo">@Localizer["Account"]</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-li"><a asp-controller="Account" asp-action="Login">@Localizer["Sign in"]</a></li>
+                        }
+                        @if (User.IsInRole(Roles.User))
+                        {
+                            <li class="nav-li">
+                                <a asp-controller="Shopping" asp-action="Cart" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">@Localizer["Cart"]</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+    <div class="footer">
+        <p>© Events.by 2021.  </p>
+    </div>
+    <script src="~/js/main.js"></script>
+</body>
+</html>

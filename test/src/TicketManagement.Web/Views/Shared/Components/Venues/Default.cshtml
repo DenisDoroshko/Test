@@ -1,0 +1,77 @@
+﻿@{ Layout = null;}
+@model IEnumerable<TicketManagement.Web.Models.VenueViewModel>
+@inject IViewLocalizer Localizer
+    <style>
+        .details {
+            height: max-content;
+            width: max-content;
+        }
+
+        .venues-list {
+            text-align: left;
+            width: 250px;
+        }
+
+        .select-block{
+            width: 100%;
+        }
+        .item{
+            height: max-content;
+        }
+    </style>
+    <div class="select-block">
+        @if (Model.Count() != 0)
+        {
+            <ul class="venues-list">
+
+                @foreach (var venue in Model)
+                {
+                    <li>
+                        <p><a href="javascript:flipflop('@venue.Name');">@venue.Name</a></p>
+
+                        <ul id="@venue.Name" style="display: none;">
+                            @foreach (var layout in venue.Layouts)
+                            {
+                                <li class="item">
+                                    @layout.Name<br />
+                                    <input id="select@(layout.Id)" onclick='setLayout(@layout.Id)' class="place-button crud-button" type="button" value=@Localizer["Select"] />
+                                    <input onclick='flipflop("@layout.Name")' class="place-button crud-button" type="button" value=@Localizer["Details"] />
+                                    <div class="details" id="@layout.Name" style="display: none;"><partial name="_LayoutDetailsPartial" model="@layout" /></div>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+            </ul>
+        }
+        else
+        {
+            <h3>@Localizer["There are no venues"]:</h3>
+        }
+    </div>
+    <script type="text/javascript">
+        var el = document.getElementById("layout-box");
+        var currentValue = el.getAttribute("value");
+        if (currentValue != 0) {
+            var currentButton = document.getElementById(`select${currentValue}`);
+            currentButton.setAttribute("value", "@Localizer["Selected"]");
+        }
+        function setLayout(id) {
+            var el = document.getElementById("layout-box");
+            var oldValue = el.getAttribute("value");
+            if (oldValue != 0) {
+                var oldButton = document.getElementById(`select${oldValue}`);
+                oldButton.setAttribute("value", "@Localizer["Select"]");
+            }
+            el.setAttribute("value", `${id}`);
+            var newButton = document.getElementById(`select${id}`);
+            newButton.setAttribute("value", "@Localizer["Selected"]");
+        }
+
+        function flipflop(id) {
+            element = document.getElementById(id);
+            if (element)
+                element.style.display = element.style.display == "none" ? "" : "none";
+        }
+    </script>

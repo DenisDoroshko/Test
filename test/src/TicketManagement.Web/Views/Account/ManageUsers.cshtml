@@ -1,0 +1,90 @@
+﻿@model IEnumerable<UserViewModel>
+@inject IViewLocalizer Localizer
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="container">
+        <div class="container-item">
+            <h1>@Localizer["Users management"]</h1>
+        </div>
+        <div class="container-item">
+            <a asp-controller="Account" asp-action="Create" class="crud-button">@Localizer["Create"]</a>
+        </div>
+        <div class="container-item">
+            @if (@Model?.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Username"]</th>
+                            <th>@Localizer["Name"]</th>
+                            <th>@Localizer["Surname"]</th>
+                            <th>@Localizer["Email"]</th>
+                            <th>@Localizer["Roles"]</th>
+                            <th>@Localizer["Time zone"]</th>
+                            <td />
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var user in @Model)
+                        {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>@user.Name</td>
+                            <td>@user.Surname</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <div class="role-button-container">
+                                    @if (user.Roles.Contains("VenueManager"))
+                                    {
+                                        <a class="role-button" asp-controller="Account" asp-action="DeleteRole" asp-route-userId="@user.Id" asp-route-roleName="VenueManager">@Localizer["Delete VenueManager"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="role-button not-exist-role" asp-controller="Account" asp-action="AddRole" asp-route-userId="@user.Id" asp-route-roleName="VenueManager">@Localizer["Add VenueManager"]</a>
+                                    }
+                                    @if (user.Roles.Contains("User"))
+                                    {
+                                        <a class="role-button" asp-controller="Account" asp-action="DeleteRole" asp-route-userId="@user.Id" asp-route-roleName="User">@Localizer["Delete User"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="role-button not-exist-role" asp-controller="Account" asp-action="AddRole" asp-route-userId="@user.Id" asp-route-roleName="User">@Localizer["Add User"]</a>
+                                    }
+                                    @if (user.Roles.Contains("EventManager"))
+                                    {
+                                        <a class="role-button" asp-controller="Account" asp-action="DeleteRole" asp-route-userId="@user.Id" asp-route-roleName="EventManager">@Localizer["Delete EventManager"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="role-button not-exist-role" asp-controller="Account" asp-action="AddRole" asp-route-userId="@user.Id" asp-route-roleName="EventManager">@Localizer["Add EventManager"]</a>
+                                    }
+                                </div>
+                            </td>
+                            <td>@user.TimeZoneId</td>
+                            <td>
+                                <a class="crud-button load-modal-frame" asp-controller="Account" asp-action="Delete" asp-route-userId="@user.Id">@Localizer["Delete"]</a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>@Localizer["There are no users"]</h3>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div class="modal">
+    <span class="modal-close">
+        <svg viewBox="0 0 40 40">
+            <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+        </svg>
+    </span>
+    <iframe></iframe>
+</div>
+
+<div class="overlay"></div>

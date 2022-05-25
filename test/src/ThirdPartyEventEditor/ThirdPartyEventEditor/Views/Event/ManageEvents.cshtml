@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ThirdPartyEventEditor.Models.ThirdPartyEvent>
+@{
+    ViewBag.Title = "ManageEvents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="all-container">
+    <div class="container">
+        <div class="container-item">
+            <h1>Events management</h1>
+        </div>
+        <div class="container-item">
+            <a href="/Event/Create" class="crud-button">Create</a>
+            <a href="/Event/Export" class="crud-button">Export events</a>
+        </div>
+        <div class="container-item">
+            @if (@Model?.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Start</th>
+                            <td />
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var eventItem in @Model)
+                        {
+                            <tr>
+                                <td>@eventItem.Name</td>
+                                <td>@eventItem.StartDate.ToLocalTime().ToString("g")</td>
+                                <td>
+                                    <div class="button-container">
+                                        <div><a class="crud-button" href="/Event/Details/@eventItem.Id" >Details</a></div>
+                                        <div><a class="crud-button" href="/Event/Edit/@eventItem.Id" >Edit</a></div>
+                                        <div><a class="crud-button"  href="/Event/Delete/@eventItem.Id">Delete</a></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>There are no events</h3>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+﻿@model EventViewModel
+@inject IViewLocalizer Localizer
+@inject TimeZoneHelper TimeZoneHelper
+@{ 
+    Model.Image ??= @"\default.jpg";
+}
+<link href="~/css/events.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Event editing"]</h1>
+    </div>
+    <div class="event-info-container">
+        <div class="container-item">
+            <div class="image-container">
+                <img src="@Model.Image" width="245" height="356">
+                <form asp-action="AttachImage" asp-controller="Event" method="post" class="file-form" enctype="multipart/form-data" id="file-form">
+                    <input name="eventId" value="@Model.Id" hidden /><br />
+                    <label class="btn btn-default btn-file crud-button">
+                        @Localizer["Browse"] <input type="file" style="display: none;" required name="image" class="file-input" accept="image/png, image/jpeg" id="file">
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="container-item">
+            <p class="success-message">@ViewData["SuccessMessage"]</p>
+            <div class="error-box" asp-validation-summary="All"></div>
+            <form asp-action="Edit" asp-controller="Event" method="post" class="form">
+                <input asp-for="@Model.Id" value="@Model.Id" class="edit-form-box" hidden />
+                <input asp-for="@Model.LayoutId" value="@Model.LayoutId" id="layout-box" class="edit-form-box" hidden />
+                <input asp-for="@Model.Image" value="@Model.Image" class="edit-form-box" hidden />
+                <label>@Localizer["Name"]</label><br />
+                <input asp-for="@Model.Name" value="@Model.Name" class="edit-form-box" maxlength="120" /><br />
+                <label>@Localizer["Description"]</label><br />
+                <textarea asp-for="@Model.Description" class="edit-form-box">@Model.Description</textarea><br />
+                <label>@Localizer["Start date and time"]</label><br />
+                <input asp-for="@Model.Start" type="text" id="startPicker" class="edit-form-box" value="@await TimeZoneHelper.ConvertToLocalAsync(Model.Start)"><br />
+                <label>@Localizer["Finish date and time"]</label><br />
+                <input asp-for="@Model.Finish" type="text" id="finishPicker" class="edit-form-box" value="@await TimeZoneHelper.ConvertToLocalAsync(Model.Finish)"><br />
+                <div class="submit-box"><button type="submit" class="crud-button edit-button">@Localizer["Submit"]</button></div>
+            </form>
+            @if (Model.EventAreas.All(a => a.EventSeats.All(s => s.State == SeatStates.Available)))
+            {
+                <h3>@Localizer["Change layout"]:</h3>
+                @await Component.InvokeAsync("Venues")
+            }
+        </div>
+    </div>
+    <div class="header-item">
+        <div class="event-details-block">
+            @{ var eventSvgWeight = Model.Width < 65 ? 900 : Model.Width * 13;
+                var eventSvgHeight = Model.Height < 20 ? 600 : Model.Height * 13;
+            }
+            <svg class="svgClass" width="@eventSvgWeight" height="@eventSvgHeight">
+                @foreach (var area in Model.EventAreas)
+                {
+                    <g fill="@area.Color">
+                        @foreach (var seat in area.EventSeats)
+                        {
+                            var x = (seat.Number + area.CoordX - 1) * 18;
+                            var y = (seat.Row + area.CoordY - 1) * 18;
+                            if (seat.State == SeatStates.Available)
+                            {
+                                <circle class="circle available-circle " cx="@x" cy="@y" r="8" />
+                            }
+                            else 
+                            { 
+                                <circle class="circle booked-circle" fill="#cdd5d4" cx="@x" cy="@y" r="8" />
+                            }
+
+                        }
+                    </g>
+                }
+            </svg>
+        </div>
+    </div>
+    <div class="header-item">
+        <h2>@Localizer["Event areas"]</h2>
+        @foreach (var area in Model.EventAreas)
+        {
+            <h3>@area.Description</h3>
+            <div class="event-block">
+
+                @{ var areaSvgWeight = area.Width < 65 ? 900 : area.Width * 13;
+                    var areaSvgHeight = area.Height < 40 ? 600 : area.Height * 13;
+                }
+                <svg class="svgClass" width="@areaSvgWeight" height="@areaSvgHeight">
+                    @if (area.CoordX != 0 && area.CoordY != 0)
+                    {
+                        <g fill="@area.Color">
+                            @foreach (var seat in area.EventSeats)
+                            {
+                                var x = (seat.Number + area.CoordX - 1) * 10;
+                                var y = (seat.Row + area.CoordX - 1) * 10;
+                                <circle class="circle" cx="@x" cy="@y" r="4" />
+                            }
+                        </g>
+                    }
+                </svg>
+            </div>
+            <div class="set-form-block">
+                <form asp-controller="Event" asp-action="SetPrice" method="post" class="price-form">
+                    <input name="eventId" value="@Model.Id" hidden /><br />
+                    <input name="eventAreaId" value="@area.Id" hidden /><br />
+                    <input name="price" type="text" placeholder="Amount" class="edit-form-box number-input" maxlength="16" value="@area.Price" />
+                    <div class="submit-price"><button type="submit" class="crud-button edit-button">@Localizer["Set price"]</button></div>
+                </form>
+            </div>
+        }
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery-3.2.1.min.js"></script>
+<script src="~/lib/jquery/dist/moment-with-locales.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var select = document.querySelector('#select-lang')
+        var language = select.value
+        $('#startPicker').datetimepicker({
+            locale: language
+        });
+        $('#finishPicker').datetimepicker({
+            locale: language
+        });
+    });
+    $(".number-input").keypress(function (e) {
+        var charCode = (e.which) ? e.which : e.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+    });
+</script>

@@ -1,0 +1,111 @@
+﻿.outer {
+    font-size: 14px;
+    background: #29475f;
+    height: 100%;
+    min-height: 400px;
+    display: table;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    text-align: center;
+    width: auto;
+    padding: 0 15px;
+}
+
+.login {
+    background: #29475f;
+    height: 100%;
+    min-height: 400px;
+}
+
+.login-wr {
+    position: relative;
+    margin: 0 auto;
+    background: #fff;
+    max-width: 350px;
+    box-shadow: 3px 3px 10px #333;
+    padding: 15px 15px 0 15px;
+}
+
+.sign-title {
+    text-align: center;
+    font-weight: 200;
+    font-size: 1.6em;
+    margin: 0 0 10px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid #eeeeee;
+    color: #474747;
+}
+
+.sign-form {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.sign-input,
+.sign-button {
+    margin-bottom: 25px;
+    height: 40px;
+    outline: 0;
+}
+
+.sign-input {
+    width: calc(80% - 45px);
+    border: 1px solid #bbb;
+    font-size: 14px;
+}
+
+.sign-input:focus,
+.sign-input:focus {
+    border: 1px solid #2196f3;
+}
+
+.register-link {
+    text-align: center;
+    font-size: 14px;
+    color: #3498db;
+}
+
+    .register-link:hover {
+        color: #c2c5c5;
+    }
+
+.text-danger {
+    color: #fe1d2b;
+}
+
+.sign-button {
+    width: 80%;
+    background: #2196f3;
+    border: none;
+    border-bottom: 5px solid #2184d7;
+    color: white;
+    font-size: 18px;
+    font-weight: 200;
+    cursor: pointer;
+    transition: box-shadow .4s ease;
+}
+
+.sign-button:hover {
+    color: #c2c5c5;
+}
+
+.register-label {
+    padding-bottom: 14px;
+}
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+}

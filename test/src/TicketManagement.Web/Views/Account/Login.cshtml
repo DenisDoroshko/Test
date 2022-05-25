@@ -1,0 +1,34 @@
+﻿@model LoginViewModel
+@inject IViewLocalizer Localizer
+@{ Layout = null;}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="~/icon.png">
+    <title>Events.by</title>
+    <link href="~/css/login.css" rel="stylesheet">
+</head>
+<body>
+    <div class="login">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="login-wr">
+                        <h2>@Localizer["SignInTo"]</h2>
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        <form asp-action="Login" asp-controller="Account" method="post" class="form">
+                            <input type="hidden" asp-for="ReturnUrl" />
+                            <input asp-for="Username" placeholder="@Localizer["UsernameHolder"]" />
+                            <input asp-for="Password" type="password" placeholder="@Localizer["PasswordHolder"]" />
+                            <a asp-controller="Account" asp-action="Registration"><p>@Localizer["RegisterLabel"] @Localizer["RegisterButton"]</p></a>
+                            <button type="submit">@Localizer["SignIn"]</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

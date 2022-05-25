@@ -1,0 +1,151 @@
+﻿@model EventViewModel
+@inject IViewLocalizer Localizer
+@using TicketManagement.Web.Infrastructure.Extensions;
+@inject TimeZoneHelper TimeZoneHelper
+@using TicketManagement.Web.Infrastructure.Identity;
+@{
+    var start = (await TimeZoneHelper.ConvertToLocalAsync(Model.Start)).ToString("g");
+    var finish = (await TimeZoneHelper.ConvertToLocalAsync(Model.Finish)).ToString("g");
+    var imageSrc = Model.Image ?? @"\default.jpg";
+}
+<link href="~/css/events.css" rel="stylesheet">
+<div class="all-container">
+    <div class="details-event-container">
+        <div class="container-item">
+            <div class="image-container">
+                <img src="@imageSrc" width="245" height="356">
+            </div>
+        </div>
+        <div class="container-item">
+            <div class="main-info">
+                <h2 class="text-center">@Model.Name</h2>
+                <img class="icon" width="18" height="18" src="~/lib/bootstrap/dist/fonts/calendar.png" alt="">
+                <h4 class="event-info">@start-@finish</h4><br />
+                <img class="icon" width="18" height="18" src="~/lib/bootstrap/dist/fonts/map-locator.png" alt="">
+                <h4 class="event-info">@Model.Address</h4><br />
+            </div>
+        </div>
+    </div>
+    <div class="header-item">
+        <h3>@Model.Description</h3>
+    </div>
+    <div class="header-item">
+        <div class="header-item">
+            <div class="event-details-block">
+                @{ var eventSvgWeight = Model.Width < 65 ? 900 : Model.Width * 13;
+                    var eventSvgHeight = Model.Height < 40 ? 600 : Model.Height * 13;
+                }
+                <svg class="svgClass" width="@eventSvgWeight" height="@eventSvgHeight">
+                    @foreach (var area in Model.EventAreas)
+                    {
+                        <g fill="@area.Color">
+                            @foreach (var seat in area.EventSeats)
+                            {
+                                var x = (seat.Number + area.CoordX - 1) * 18;
+                                var y = (seat.Row + area.CoordY - 1) * 18;
+                                if (seat.State == SeatStates.Available)
+                                {
+                                    @if (User.IsInRole(Roles.User))
+                                    {
+                                        var cart = Context.Session.GetJson<CartViewModel>("cart") ?? new CartViewModel();
+                                        if (cart.Tickets.Any(t => t.EventSeatId == seat.Id))
+                                        {
+                                            <circle id="svg@(seat.Id)" onmouseover="showPopup(evt,'@Localizer["Selected"]',@(seat.Number),@(seat.Row),@area.Price)" onmouseout="hidePopup(evt)" class="circle selected-circle" fill="#16110c" cx="@x" cy="@y" r="8" />
+                                        }
+                                        else
+                                        {
+                                            <circle id="svg@(seat.Id)" onmouseover="showPopup(evt,'@Localizer["Available"]',@(seat.Number),@(seat.Row),@area.Price)" onmouseout="hidePopup(evt)" onclick="addToCart('@seat.Id', '@seat.Number', '@seat.Row', '@area.Price')" class="circle available-circle" cx="@x" cy="@y" r="8" />
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <circle id="svg@(seat.Id)" onmouseover="showPopup(evt,'@Localizer["Available"]',@(seat.Number),@(seat.Row),@area.Price)" onmouseout="hidePopup(evt)" class="circle available-circle " cx="@x" cy="@y" r="8" />
+                                    }
+                                }
+                                else
+                                {
+                                    <circle id="svg@(seat.Id)" onmouseover="showPopup(evt,'@Localizer["Booked"]',@(seat.Number),@(seat.Row),@area.Price)" onmouseout="hidePopup(evt)" class="circle booked-circle" fill="#cdd5d4" cx="@x" cy="@y" r="8" />
+                                }
+                            }
+                            }
+                        </g>
+                    }
+                </svg>
+                <form id="addForm" asp-action="Cart" asp-controller="Shopping" method="post" hidden>
+                    <input id="seatInput" name="seatId" />
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popup">
+</div>
+<script src="~/lib/jquery/dist/jquery-3.2.1.min.js"></script>
+<script src="~/lib/jquery/dist/moment-with-locales.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    function showPopup(evt,state,number, row, price) {
+        var mypopup = document.getElementById("popup");
+        mypopup.innerHTML = `<p>@Localizer["State"]:${state}<br>@Localizer["Row"]:${row}<br>@Localizer["Number"]:${number}<br>@Localizer["Price"]:${price}</p>`;
+        mypopup.style.left = (evt.pageX+10) + "px";
+        mypopup.style.top = (evt.pageY) + "px";
+        mypopup.style.display = "block";
+    }
+
+    function hidePopup(evt) {
+        var mypopup = document.getElementById("popup");
+        mypopup.style.display = "none";
+    }
+    function addToCart1(seatId) {
+        var seatInput = document.getElementById('seatInput');
+        seatInput.value = seatId;
+        var addForm = document.getElementById('addForm');
+        addForm.submit();
+    }
+    function addToCart(seatId, number,row,price) {
+            var data = { seatId: seatId};
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Cart", "Shopping")',
+                data: data,
+                success: function () {
+                    var circle = document.getElementById(`svg${seatId}`);
+                    circle.setAttribute("fill", "#16110c")
+                    circle.setAttribute("onclick", `deleteFromCart('${seatId}', '${number}', '${row}', '${price}')`);
+                    circle.setAttribute("onmouseover", `showPopup(evt,'@Localizer["Selected"]','${number}','${row}','${price}')`);
+                    circle.classList.remove("available-circle");
+                    circle.classList.add("selected-circle");
+                }
+            });
+    }
+    function deleteFromCart(seatId, number,row,price) {
+            var data = { seatId: seatId};
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteInEvent", "Shopping")',
+                data: data,
+                success: function () {
+                    var circle = document.getElementById(`svg${seatId}`);
+                    circle.setAttribute("fill", "")
+                    circle.setAttribute("onclick", `addToCart('${seatId}', '${number}', '${row}', '${price}')`);
+                    circle.setAttribute("onmouseover", `showPopup(evt,'@Localizer["Available"]','${number}','${row}','${price}')`);
+                    circle.classList.remove("selected-circle");
+                    circle.classList.add("available-circle");
+                }
+            });
+        }
+    $(function () {
+        var select = document.querySelector('#select-lang')
+        var language = select.value
+        $('#startPicker').datetimepicker({
+            locale: language
+        });
+        $('#finishPicker').datetimepicker({
+            locale: language
+        });
+    });
+</script>

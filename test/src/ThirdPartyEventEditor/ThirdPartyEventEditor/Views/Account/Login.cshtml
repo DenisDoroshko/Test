@@ -1,0 +1,26 @@
+﻿@using ThirdPartyEventEditor.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<div class="all-container">
+    <div class="header-item">
+        <h1>Log in to Third party editor</h1>
+    </div>
+    <div class="header-item">
+        <form action="/Account/Login" method="post" class="form">
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            <input name="ReturnUrl" value="@Model.ReturnUrl" hidden/><br />
+            <label>Email</label><br />
+            <input name="Email" class="form-box" maxlength="120" /><br />
+            <label>Password</label><br />
+            <input name="Password" type="password" class="form-box" maxlength="120" /><br />
+            <a href="/Account/Register">Don't have an account? Create it!</a>
+            <div class="create-button-box"><button type="submit" class="crud-button edit-button">Submit</button></div>
+        </form>
+    </div>
+</div>
+
+

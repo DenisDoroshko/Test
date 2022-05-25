@@ -1,0 +1,63 @@
+﻿@model TicketManagement.Web.Models.EventViewModel
+@inject IViewLocalizer Localizer
+@inject TimeZoneHelper TimeZoneHelper
+@{ 
+    var startDate = Model.Start;
+    if(startDate.Year == 1)
+    {
+        startDate = DateTime.UtcNow;
+    }
+    var finishDate = Model.Finish;
+    if (finishDate.Year == 1)
+    {
+        finishDate = DateTime.UtcNow;
+    }
+}
+<link href="~/css/events.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Event creating"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="create-success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Create" asp-controller="Event" id="create-form" method="post" class="form" enctype="multipart/form-data">
+            <label>@Localizer["Name"]</label><br />
+            <input asp-for="@Model.Name" value="@Model.Name" class="form-box" maxlength="120" /><br />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" class="form-box">@Model.Description</textarea><br />
+            <label>@Localizer["Start date and time"]</label><br />
+            <input asp-for="@Model.Start" type="text" id="startPicker" class="form-box" value="@await TimeZoneHelper.ConvertToLocalAsync(startDate)"><br />
+            <label>@Localizer["Finish date and time"]</label><br />
+            <input asp-for="@Model.Finish" type="text" id="finishPicker" class="form-box" value="@await TimeZoneHelper.ConvertToLocalAsync(finishDate)"><br />
+            <input asp-for="@Model.LayoutId" id="layout-box" value="@Model.LayoutId" hidden />
+            <div class="create-button-box">
+                <label class="btn btn-default btn-file crud-button choose-button">
+                    @Localizer["Choose image"] <input type="file" style="display: none;" required name="image" class="file-input" accept="image/png, image/jpeg" id="file">
+                </label>
+            </div>
+            <div class="create-button-box"><button id="submit-form-button" type="submit" class="crud-button edit-button">@Localizer["Submit"]</button></div>
+        </form>
+        @await Component.InvokeAsync("Venues")
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery-3.2.1.min.js"></script>
+<script src="~/lib/jquery/dist/moment-with-locales.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $("#submit-form-button").click(function () {
+        $("#create-form").submit();
+
+    });
+    $(function () {
+        var select = document.querySelector('#select-lang')
+        var language = select.value
+        $('#startPicker').datetimepicker({
+            locale: language
+        });
+        $('#finishPicker').datetimepicker({
+            locale: language
+        });
+    });
+</script>

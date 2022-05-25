@@ -1,0 +1,23 @@
+﻿@model TicketManagement.Web.Models.VenueViewModel
+@inject IViewLocalizer Localizer
+<link href="~/css/venues.css" rel="stylesheet">
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Venue creating"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Create" asp-controller="Venue" method="post" class="form">
+            <label>@Localizer["Name"]</label><br />
+            <input asp-for="@Model.Name" class="form-box" /><br />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" maxlength="120" class="form-box"></textarea><br />
+            <label>@Localizer["Phone"]</label><br />
+            <input asp-for="@Model.Phone" placeholder="+xxx(xxx)xxxxxxx" maxlength="30" class="form-box" /><br />
+            <label>@Localizer["Address"]</label><br />
+            <input asp-for="@Model.Address" maxlength="200" class="form-box" /><br />
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+</div>

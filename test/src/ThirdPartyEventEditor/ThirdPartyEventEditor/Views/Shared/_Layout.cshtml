@@ -1,0 +1,58 @@
+﻿@using Roles = ThirdPartyEventEditor.App_Start.Roles
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
+<body>
+    <div class="header">
+        <div class="main-container">
+            <div class="grid-item">
+                <ul class="mainbar">
+                    <li class="nav-li"><a href="/Home/Index">Home</a></li>
+                </ul>
+            </div>
+            <div class="grid-item nav-sub">
+                @if (User.IsInRole(Roles.Admin))
+                {
+                    <ul class="topmenu ul-sub">
+                        <li class="li-sub nav-li">
+                            <a href="">Tools></a>
+                            <ul class="submenu ul-sub">
+                                <li class="li-sub"><a class="a-sub" href="/Account/ManageUsers">Manage users</a></li>
+                                <li class="li-sub"><a class="a-sub" href="/Event/ManageEvents">Manage events</a></li>
+                                <li class="li-sub"><a class="a-sub" href="/Event/Export">Export events</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+            </div>
+            <div class="grid-item">
+                <ul class="mainbar">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="nav-li"><a href="/Account/Logout">Log out</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-li"><a href="/Account/Login">Log in</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+        <footer>
+            <div class="footer">
+                <p>Third party tool</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

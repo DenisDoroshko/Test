@@ -1,0 +1,67 @@
+﻿@model ThirdPartyEventEditor.Models.ThirdPartyEvent
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="all-container">
+    <div class="header-item">
+        <h1>Event editing</h1>
+    </div>
+    <div class="event-info-container">
+        <div class="container-item">
+            <div class="image-container">
+                <img src="@Model.PosterImage" width="245" height="356">
+                <form action="/Event/AttachImage" method="post" class="file-form" enctype="multipart/form-data" id="file-form">
+                    <input name="eventId" value="@Model.Id" hidden /><br />
+                    <label class="btn btn-default btn-file crud-button">
+                        Browse <input type="file" style="display: none;" required name="image" class="file-input" accept="image/png, image/jpeg" id="file">
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="container-item">
+            <p class="success-message">@ViewData["SuccessMessage"]</p>
+            @Html.ValidationSummary(true)
+            <form action="/Event/Edit" method="post" class="form">
+                <input name="Id" value="@Model.Id" class="edit-form-box" hidden />
+                <input name="PosterImage" value="@Model.PosterImage" class="edit-form-box" hidden />
+                <label>Name</label><br />
+                <input name="Name" value="@Model.Name" class="edit-form-box" maxlength="120" /><br />
+                <label>Venue name</label><br />
+                <input name="VenueName" value="@Model.VenueName" class="edit-form-box" maxlength="120" /><br />
+                <label>Layout name</label><br />
+                <input name="LayoutName" value="@Model.LayoutName" class="edit-form-box" maxlength="120" /><br />
+                <label>Description</label><br />
+                <textarea name="Description" class="edit-form-box">@Model.Description</textarea><br />
+                <label>Start date and time</label><br />
+                <input name="StartDate" type="text" id="startPicker" class="edit-form-box" value="@Model.StartDate.ToLocalTime()"><br />
+                <label>End date and time</label><br />
+                <input name="EndDate" type="text" id="finishPicker" class="edit-form-box" value="@Model.EndDate.ToLocalTime()"><br />
+                <div class="submit-box"><button type="submit" class="crud-button edit-button">Submit</button></div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/moment-with-locales.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $('#file').change(function () {
+        $('#file-form').submit();
+    });
+    $(function () {
+        $("#submit-form-button").click(function () {
+            $("#create-form").submit();
+
+        });
+        $('#startPicker').datetimepicker({
+            locale: "en"
+        });
+        $('#finishPicker').datetimepicker({
+            locale: "en"
+        });
+    });
+</script>

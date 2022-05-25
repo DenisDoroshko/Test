@@ -1,0 +1,109 @@
+﻿@model AreaViewModel
+@inject IViewLocalizer Localizer
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Area editing"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Edit" asp-controller="Area" method="post" class="form">
+            <input asp-for="@Model.Id" value="@Model.Id" hidden />
+            <input asp-for="@Model.LayoutId" value="@Model.LayoutId" hidden />
+            <input asp-for="@Model.CoordX" value="@Model.CoordX" hidden />
+            <input asp-for="@Model.CoordY" value="@Model.CoordY" hidden />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" maxlength="200" class="form-box"></textarea><br />
+            <label>@Localizer["Color"]</label><br />
+            <input asp-for="@Model.Color" type="color" value="@Model.Color">
+            <label>@Localizer["Width"]</label><br />
+            <input asp-for="@Model.Width" value="@Model.Width" min="0" max="100000" class="form-box" /><br />
+            <label>@Localizer["Height"]</label><br />
+            <input asp-for="@Model.Height" value="@Model.Height" min="0" max="100000" class="form-box" /><br />
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+    <style>
+        .svgClass {
+            background-color: #e9e8f3;
+        }
+        .create {
+            fill: #cdd5d4;
+        }
+            .create:hover {
+                fill: #9fa5a4
+            }
+        .delete {
+            fill: @Model.Color;
+        }
+
+            .delete:hover {
+                fill: #4780c2
+            }
+        .svg-block {
+            margin: 0 auto;
+            width: 900px;
+            height: 600px;
+            overflow: scroll;
+        }
+    </style>
+    <div class="header-item">
+        <div class="svg-block">
+            @{ var svgWeight = Model.Width < 65 ? 900 : Model.Width * 15;
+                var svgHeight = Model.Height < 40 ? 600 : Model.Height * 15;
+            }
+            <svg class="svgClass" width="@svgWeight" height="@svgHeight">
+                @for (var i = 1; i <= Model.Height; i++)
+                {
+                    for (var j = 1; j <= Model.Width; j++)
+                    {
+                        var x = j * 14;
+                        var y = i * 14;
+                        var circleId = $"s{i}{j}";
+                        if (Model.Seats.Any(s => s.Number == j && s.Row == i))
+                        {
+                            var seatId = Model.Seats.FirstOrDefault(s => s.Number == j && s.Row == i).Id;
+                            <circle id="@circleId" onclick='deleteSeat(@seatId,@j,@i)' class="delete" cx="@x" cy="@y" r="5" />
+                        }
+                        else
+                        {
+                            <circle id="@circleId" class="create" onclick='createSeat(@j,@i)' cx="@x" cy="@y" r="5" />
+                        }
+                    }
+                }
+            </svg>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        function createSeat(number, row) {
+            var data = { areaId: @Model.Id, number: number, row: row };
+            let cirleId = `#s${row}${number}`;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "Seat")',
+                data: data,
+                success: function (result) {
+                    var el = document.querySelector(cirleId);
+                    el.classList.remove("create");
+                    el.classList.add("delete");
+                    el.setAttribute("onclick", `deleteSeat(${result}, ${number}, ${row})`);
+                }
+            });
+        }
+        function deleteSeat(seatId, number, row) {
+            var data = { seatId: seatId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete", "Seat")',
+                data: data,
+                success: function () {
+                    var el = document.querySelector(`#s${row}${number}`);
+                    el.classList.remove("delete");
+                    el.classList.add("create");
+                    el.setAttribute("onclick", `createSeat(${number}, ${row})`);
+                }
+            });
+        }
+    </script>
+</div>

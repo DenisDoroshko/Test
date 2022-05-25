@@ -1,0 +1,23 @@
+﻿@model AreaViewModel
+@inject IViewLocalizer Localizer
+<div class="all-container">
+    <div class="header-item">
+        <h1>@Localizer["Area creating"]</h1>
+    </div>
+    <div class="header-item">
+        <p class="success-message">@ViewData["SuccessMessage"]</p>
+        <div class="error-box" asp-validation-summary="All"></div>
+        <form asp-action="Create" asp-controller="Area" method="post" class="form">
+            <input asp-for="@Model.LayoutId" value="@Model.LayoutId" class="form-box" hidden />
+            <label>@Localizer["Description"]</label><br />
+            <textarea asp-for="@Model.Description" maxlength="200" class="form-box"></textarea><br />
+            <label>@Localizer["Color"]</label><br />
+            <input asp-for="@Model.Color" type="color" value="#e66465"><br />
+            <label>@Localizer["Width"]</label><br />
+            <input asp-for="@Model.Width" value="@Model.Width" min="0" max="100000" class="form-box" /><br />
+            <label>@Localizer["Height"]</label><br />
+            <input asp-for="@Model.Height" value="@Model.Height" min="0" max="100000" class="form-box" /><br />
+            <div class="submit-box"><button type="submit" class="crud-button submit-button">@Localizer["Submit"]</button></div>
+        </form>
+    </div>
+</div>
